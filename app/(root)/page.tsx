@@ -5,6 +5,8 @@ export const metadata: Metadata = {
   description: `A modern ecommerce website `,
 };
 
-export default function HomePage() {
+const HomePage = async () => {
   return <div>ProStore</div>;
-}
+};
+
+export default HomePage;
