@@ -1,12 +1,12 @@
-import { Metadata } from "next";
-
-export const metadata: Metadata = {
-  title: "Home",
-  description: `A modern ecommerce website `,
-};
-
+import ProductList from "@/components/product-list";
+import sampledata from "@/db/sample-data";
 const HomePage = async () => {
-  return <div>ProStore</div>;
+  console.log(sampledata);
+  return (
+    <>
+      <ProductList data={sampledata.products} title="New Arrivals" limit={4} />
+    </>
+  );
 };
 
 export default HomePage;
