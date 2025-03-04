@@ -1,4 +1,4 @@
-import ProductList from "@/components/product-list";
+import ProductList from "@/components/product/product-list";
 import sampledata from "@/db/sample-data";
 const HomePage = async () => {
   console.log(sampledata);
