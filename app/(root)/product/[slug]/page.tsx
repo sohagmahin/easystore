@@ -2,7 +2,6 @@ import AddToCart from "@/components/product/add-to-cart";
 import ProductImage from "@/components/product/product-image";
 import ProductPrice from "@/components/product/product-price";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { getProductBySlug } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
