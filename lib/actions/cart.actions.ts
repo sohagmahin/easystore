@@ -203,3 +203,16 @@ export async function removeItemFromCart(productId: string) {
     return { success: false, message: formatError(error) };
   }
 }
+
+// Get order by id
+
+export async function getOrderById(orderId: string) {
+  const data = await prisma.order.findFirst({
+    where: { id: orderId },
+    include: {
+      orderItem: true,
+      user: { select: { name: true, email: true } },
+    },
+  });
+  return convertToPlainObject(data);
+}
