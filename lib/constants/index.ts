@@ -18,3 +18,18 @@ export const signUpDefaultValues = {
   password: "",
   confirmPassword: "",
 };
+
+export const shippingAddressDefaultValue = {
+  fullName: "John Deo",
+  streetAddress: "Park view 02",
+  city: "New York",
+  postalCode: "123",
+  country: "USA",
+};
+
+export const PAYMENT_METHODS = process.env.PAYMENT_METHODS
+  ? process.env.PAYMENT_METHODS?.split(", ")
+  : ["Paypal", "Stripe", "CashOnDelivery"];
+
+export const DEFAULT_PAYMENT_METHOD =
+  process.env.DEFAULT_PAYMENT_METHOD || "Paypal";
