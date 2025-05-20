@@ -1,7 +1,7 @@
 # 🛍️ Easy Store – E-commerce Platform
 
 **Tech Stack:**  
-Next.js 15 • TypeScript • Prisma + PostgreSQL • TailwindCSS • ShadCN/UI • React Hook Form
+Next.js 15 • TypeScript • Prisma + PostgreSQL • TailwindCSS • ShadCN/UI • Next-Auth • React Hook Form • Zod
 
 ## 🚀 Overview
 
@@ -15,17 +15,21 @@ Next.js 15 • TypeScript • Prisma + PostgreSQL • TailwindCSS • ShadCN/UI 
   - [TailwindCSS](https://tailwindcss.com/) – Utility-first CSS  
   - [ShadCN/UI](https://ui.shadcn.com/) – Accessible and styled components  
   - [React Hook Form](https://react-hook-form.com/) – Forms and validation
+  - [Zod](https://zod.dev/) - Schema validation
 
 - **Backend:**  
   - [Prisma ORM](https://www.prisma.io/) – Database toolkit  
   - [PostgreSQL](https://www.postgresql.org/) – Relational database
+ 
+- **Payment Gateway:**
+- Stripe
 
 ## ✨ Features
 
 - 🛒 Product listing and filtering  
 - 🧾 Product details page  
-- 🎯 Cart management (cookie/session-based)  
+- 🎯 Cart management (cookie/session-based)
+- 💳 Checkout and payment integration
+- 📦 Order management
+- 🧑‍💼 Admin dashboard 
 - ✅ Form handling with validation  
-- 💡 Modern UI using ShadCN components  
-- ⚡ Optimized performance with Next.js App Router  
-- 🔐 Scalable structure and clean code architecture
