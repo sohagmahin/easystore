@@ -40,8 +40,8 @@ export async function POST(req: NextRequest) {
   });
 }
 
-// Testing
-export async function GET(req: NextRequest, res: NextResponse) {
+// @ts-nocheck
+export async function GET() {
   return NextResponse.json({
     message: "Hello stripe",
   });
