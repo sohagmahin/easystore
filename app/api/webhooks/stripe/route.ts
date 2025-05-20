@@ -3,6 +3,7 @@ import Stripe from "stripe";
 import { updateOrderToPaid } from "@/lib/actions/order.actions";
 
 export async function POST(req: NextRequest) {
+  console.log("inside stripe web hooks");
   // Build the webhook event
   const event = await Stripe.webhooks.constructEvent(
     await req.text(),
@@ -10,10 +11,14 @@ export async function POST(req: NextRequest) {
     process.env.STRIPE_WEBHOOK_SECRET as string
   );
 
+  console.log("events");
+  console.log(event);
+
   // Check for successful payment
   if (event.type === "charge.succeeded") {
     const { object } = event.data;
-
+    console.log("inside chartge.succeeded");
+    // Update order status
     await updateOrderToPaid({
       orderId: object.metadata.orderId,
       paymentResult: {
@@ -24,6 +29,7 @@ export async function POST(req: NextRequest) {
       },
     });
 
+    console.log("inside -> updateOrderToPaid");
     return NextResponse.json({
       message: "updateOrderToPaid was successful",
     });
@@ -31,5 +37,12 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({
     message: "event is not charge.succeeded",
+  });
+}
+
+// Testing
+export async function GET(req: NextRequest, res: NextResponse) {
+  return NextResponse.json({
+    message: "Hello stripe",
   });
 }
