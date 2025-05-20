@@ -8,7 +8,7 @@ import { authConfig } from "./auth.config";
 
 export const config = {
   pages: {
-    signIn: "/auth/signin",
+    signIn: "/sign-in",
     signOut: "/auth/signout",
     error: "/auth/error", // Error code passed in query string as ?error=
   },
@@ -85,6 +85,11 @@ export const config = {
             data: { name: token.name },
           });
         }
+      }
+
+      // Handle session updates
+      if (session?.user.name && trigger === "update") {
+        token.name = session.user.name;
       }
 
       if (trigger === "signIn" || trigger === "signUp") {
