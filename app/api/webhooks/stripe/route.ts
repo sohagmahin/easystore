@@ -14,6 +14,7 @@ export async function POST(req: NextRequest) {
   if (event.type === "charge.succeeded") {
     const { object } = event.data;
 
+    // Update order status
     await updateOrderToPaid({
       orderId: object.metadata.orderId,
       paymentResult: {
@@ -31,5 +32,12 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({
     message: "event is not charge.succeeded",
+  });
+}
+
+// @ts-nocheck
+export async function GET() {
+  return NextResponse.json({
+    message: "Hello stripe",
   });
 }
