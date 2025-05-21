@@ -21,7 +21,7 @@ export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
 export type OrderItem = z.infer<typeof insertOrderitemSchema>;
 export type Order = z.infer<typeof insertOrderSchema> & {
   id: string;
-  createAt: Date;
+  createdAt: Date;
   isPaid: boolean;
   paidAt: Date | null;
   isDelivered: boolean;
