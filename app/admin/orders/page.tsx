@@ -1,28 +1,36 @@
+import { auth } from "@/auth";
 import Pagination from "@/components/shared/pagination";
+import { Button } from "@/components/ui/button";
 import {
+  Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-  Table,
 } from "@/components/ui/table";
-import { getMyOrders } from "@/lib/actions/order.actions";
+import { getAllOrders } from "@/lib/actions/user.action";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "My Orders",
+  title: "Admin Order Page",
 };
 
-const OrderPage = async (props: {
+const AdminOrderPage = async (props: {
   searchParams: Promise<{ page: string }>;
 }) => {
-  const { page } = await props.searchParams;
+  const { page = "1" } = await props.searchParams;
 
-  const orders = await getMyOrders({
-    page: Number(page) || 1,
+  const session = await auth();
+  if (session?.user?.role !== "admin") {
+    throw new Error("User is not authorized");
+  }
+
+  const orders = await getAllOrders({
+    page: Number(page),
+    // limit: 2,
   });
 
   return (
@@ -59,9 +67,11 @@ const OrderPage = async (props: {
                     : "Not Delivered"}
                 </TableCell>
                 <TableCell>
-                  <Link href={`/order/${order.id}`}>
-                    <span>Details</span>
-                  </Link>
+                  <Button asChild variant="outline" size="sm">
+                    <Link href={`/order/${order.id}`}>
+                      <span>Details</span>
+                    </Link>
+                  </Button>
                 </TableCell>
               </TableRow>
             ))}
@@ -76,4 +86,4 @@ const OrderPage = async (props: {
   );
 };
 
-export default OrderPage;
+export default AdminOrderPage;

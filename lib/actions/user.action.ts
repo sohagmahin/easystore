@@ -12,6 +12,7 @@ import { prisma } from "@/db/prisma";
 import { formatError } from "../utils";
 import { ShippingAddress } from "@/types";
 import { z } from "zod";
+import { PAGE_SIZE } from "../constants";
 
 export async function signInWithCredentials(
   preState: unknown,
@@ -171,4 +172,26 @@ export async function updateProfile(user: { name: string; email: string }) {
       message: formatError(error),
     };
   }
+}
+
+// Get all orders
+export async function getAllOrders({
+  limit = PAGE_SIZE,
+  page,
+}: {
+  limit?: number;
+  page: number;
+}) {
+  const data = await prisma.order.findMany({
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    skip: (page - 1) * limit,
+    include: { user: { select: { name: true } } },
+  });
+  const dataCount = await prisma.order.count();
+
+  return {
+    data,
+    totalPage: Math.ceil(dataCount / limit),
+  };
 }
