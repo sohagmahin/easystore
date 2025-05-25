@@ -13,6 +13,8 @@ import { getAllOrders } from "@/lib/actions/user.action";
 import { formatCurrency, formatDateTime, formatId } from "@/lib/utils";
 import { Metadata } from "next";
 import Link from "next/link";
+import DeleteDialog from "@/components/shared/delete-dialog";
+import { deleteOrder } from "@/lib/actions/order.actions";
 
 export const metadata: Metadata = {
   title: "Admin Order Page",
@@ -72,6 +74,7 @@ const AdminOrderPage = async (props: {
                       <span>Details</span>
                     </Link>
                   </Button>
+                  <DeleteDialog id={order.id} action={deleteOrder} />
                 </TableCell>
               </TableRow>
             ))}
