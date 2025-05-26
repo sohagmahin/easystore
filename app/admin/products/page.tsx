@@ -11,7 +11,12 @@ import {
 } from "@/components/ui/table";
 import { deleteProduct, getAllProducts } from "@/lib/actions/product.actions";
 import { formatCurrency, formatId } from "@/lib/utils";
+import { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Admin Products",
+};
 
 const AdminProductsPage = async (props: {
   searchParams: Promise<{
@@ -75,7 +80,7 @@ const AdminProductsPage = async (props: {
           ))}
         </TableBody>
       </Table>
-      {products?.totalPage && products.totalPage > 1 && (
+      {products.totalPage > 1 && (
         <Pagination page={page} totalPage={products.totalPage} />
       )}
     </div>
