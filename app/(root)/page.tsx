@@ -1,5 +1,7 @@
+import DealCountdown from "@/components/deal-countdown";
 import ProductCarousel from "@/components/product/product-carousel";
 import ProductList from "@/components/product/product-list";
+import IconBoxes from "@/components/ui/icon-boxes";
 import ViewAllProductsButton from "@/components/view-all-products-button";
 import {
   getFeaturedProducts,
@@ -15,6 +17,8 @@ const HomePage = async () => {
       )}
       <ProductList data={products} title="New Arrivals" />
       <ViewAllProductsButton />
+      <DealCountdown />
+      <IconBoxes />
     </>
   );
 };
