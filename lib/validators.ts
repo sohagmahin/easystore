@@ -10,6 +10,7 @@ const currency = z
   );
 
 // Schema for inserting products
+
 export const insertProductSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
   slug: z.string().min(3, "Slug must be at least 3 characters"),
@@ -21,6 +22,12 @@ export const insertProductSchema = z.object({
   isFeatured: z.boolean(),
   banner: z.string().nullable(),
   price: currency,
+});
+
+// Schema for updating products
+
+export const updateProductSchema = insertProductSchema.extend({
+  id: z.string().min(1, "Id is required"),
 });
 
 // Schema for signing users in
@@ -117,4 +124,23 @@ export const paymentResultSchema = z.object({
 export const updateProfileSchema = z.object({
   name: z.string().min(3, "Name must be atleast 3 characters"),
   email: z.string().min(3, "Email must be at least 3 characters"),
+});
+
+// Schema to update users
+export const updateUserSchema = updateProfileSchema.extend({
+  id: z.string().min(1, "ID is required"),
+  role: z.string().min(1, "Role is required"),
+});
+
+// insert reviews schema
+export const insertReviewSchema = z.object({
+  title: z.string().min(3, "Title must be at least 3 character"),
+  description: z.string().min(3, "Description must be at least 3 character"),
+  productId: z.string().min(1, "Product ID is required"),
+  userId: z.string().min(1, "User ID is required"),
+  rating: z.coerce
+    .number()
+    .int()
+    .min(1, "Rating must be at least 1")
+    .max(5, "Ratiing must be at most 5"),
 });

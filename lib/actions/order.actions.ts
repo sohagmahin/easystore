@@ -7,11 +7,12 @@ import { getMyCart } from "./cart.actions";
 import { getUserById } from "./user.action";
 import { insertOrderSchema } from "../validators";
 import { prisma } from "@/db/prisma";
-import { CartItem, PaymentResult } from "@/types";
+import { CartItem, PaymentResult, ShippingAddress } from "@/types";
 import { paypal } from "../paypal";
 import { revalidatePath } from "next/cache";
 import { PAGE_SIZE } from "../constants";
 import { Prisma } from "@prisma/client";
+import { sendPurchaseReceipt } from "@/email";
 
 // create order and careate the order items
 
@@ -247,6 +248,14 @@ export async function updateOrderToPaid({
       });
 
       if (!updatedOrder) throw new Error("Order not found");
+
+      sendPurchaseReceipt({
+        order: {
+          ...updatedOrder,
+          shippingAddress: updatedOrder.shippingAddress as ShippingAddress,
+          paymentResult: updatedOrder.paymentResult as PaymentResult,
+        },
+      });
     }
   });
 }
@@ -323,4 +332,110 @@ export async function getOrderSummary() {
     latestSales,
     salesData,
   };
+}
+
+export async function deleteOrder(id: string) {
+  try {
+    await prisma.order.delete({ where: { id } });
+    revalidatePath("/admin/orders");
+
+    return {
+      success: true,
+      message: "Order deleted successfully",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+}
+
+// Get all orders
+export async function getAllOrders({
+  limit = PAGE_SIZE,
+  page,
+  query,
+}: {
+  limit?: number;
+  page: number;
+  query: string;
+}) {
+  const queryFilter: Prisma.OrderWhereInput =
+    query && query !== "all"
+      ? {
+          user: {
+            name: {
+              contains: query,
+              mode: "insensitive",
+            } as Prisma.StringFilter,
+          },
+        }
+      : {};
+
+  const data = await prisma.order.findMany({
+    where: { ...queryFilter },
+    orderBy: { createdAt: "desc" },
+    take: limit,
+    skip: (page - 1) * limit,
+    include: { user: { select: { name: true } } },
+  });
+  const dataCount = await prisma.order.count();
+
+  return {
+    data,
+    totalPage: Math.ceil(dataCount / limit),
+  };
+}
+
+export async function updateOrderToPaidCOD(orderId: string) {
+  try {
+    await updateOrderToPaid({ orderId: orderId });
+
+    revalidatePath(`/order/${orderId}`);
+
+    return {
+      success: true,
+      message: "Order marked as paid",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
+}
+
+// update COD order to delivered
+export async function deliverOrder(orderId: string) {
+  try {
+    const order = await prisma.order.findFirst({
+      where: {
+        id: orderId,
+      },
+    });
+
+    if (!order) throw new Error("Order not found");
+    if (!order.isPaid) throw new Error("Order is not paid");
+
+    await prisma.order.update({
+      where: { id: orderId },
+      data: {
+        isDelivered: true,
+        deliveredAt: new Date(),
+      },
+    });
+
+    revalidatePath(`/order/${orderId}`);
+
+    return {
+      success: true,
+      message: "Order has been marked delivered",
+    };
+  } catch (error) {
+    return {
+      success: false,
+      message: formatError(error),
+    };
+  }
 }
