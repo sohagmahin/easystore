@@ -1,6 +1,6 @@
 "use server";
 import { prisma } from "@/db/prisma";
-import { date, z } from "zod";
+import { z } from "zod";
 import { convertToPlainObject, formatError } from "../utils";
 import { LATEST_PRODUCT_LIMIT, PAGE_SIZE } from "../constants";
 import { revalidatePath } from "next/cache";
@@ -98,10 +98,10 @@ export async function getAllProducts({
       sort === "lowest"
         ? { price: "asc" }
         : sort === "highest"
-        ? { price: "desc" }
-        : sort === "rating"
-        ? { rating: "desc" }
-        : { createdAt: "desc" },
+          ? { price: "desc" }
+          : sort === "rating"
+            ? { rating: "desc" }
+            : { createdAt: "desc" },
     skip: (page - 1) * limit,
     take: limit,
   });
