@@ -15,6 +15,7 @@ import {
   FormField,
   FormItem,
   FormLabel,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 
@@ -100,6 +101,7 @@ const CommentForm = ({
                     <FormControl>
                       <Input placeholder="Enter title" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -112,6 +114,7 @@ const CommentForm = ({
                     <FormControl>
                       <Textarea placeholder="Enter Your Comments" {...field} />
                     </FormControl>
+                    <FormMessage />
                   </FormItem>
                 )}
               />
