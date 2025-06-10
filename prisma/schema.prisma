@@ -26,11 +26,13 @@ model Product {
   price       Decimal     @default(0) @db.Decimal(12, 2)
   rating      Decimal     @default(0) @db.Decimal(3, 2)
   numReviews  Int         @default(0)
+  numComments Int         @default(0)
   isFeatured  Boolean     @default(false)
   banner      String?
   createdAt   DateTime    @default(now()) @db.Timestamp(6)
   OrderItem   OrderItem[]
   Review      Review[]
+  Comment     Comment[]
 }
 
 model User {
@@ -50,6 +52,7 @@ model User {
   cart          Cart[]
   order         Order[]
   Review        Review[]
+  Comment       Comment[]
 }
 
 model Account {
@@ -146,4 +149,15 @@ model Review {
   createdAt          DateTime @default(now()) @db.Timestamp(6)
   product            Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
   user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Comment {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String?  @db.Uuid
+  productId String   @db.Uuid
+  title     String
+  body      String
+  createdAt DateTime @default(now()) @db.Timestamp(6)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

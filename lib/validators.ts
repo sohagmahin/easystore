@@ -144,3 +144,11 @@ export const insertReviewSchema = z.object({
     .min(1, "Rating must be at least 1")
     .max(5, "Ratiing must be at most 5"),
 });
+
+// insert comments schema
+export const insertCommentSchema = z.object({
+  title: z.string().min(3, "Title must be at least 3 character"),
+  body: z.string().min(3, "Body must be at least 3 character"),
+  productId: z.string().min(1, "Product ID is required"),
+  userId: z.string().optional(),
+});
