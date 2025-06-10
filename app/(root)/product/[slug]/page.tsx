@@ -9,6 +9,7 @@ import { getProductBySlug } from "@/lib/actions/product.actions";
 import { notFound } from "next/navigation";
 import ReviewList from "./review-list";
 import Rating from "@/components/product/rating";
+import CommentList from "./comment-list";
 
 const ProductDetailsPage = async (props: {
   params: Promise<{ slug: string }>;
@@ -89,14 +90,20 @@ const ProductDetailsPage = async (props: {
           </div>
         </div>
       </section>
-      <section className="mt-10">
-        <h2 className="h2-bold">Customer Reviews</h2>
-        <ReviewList
-          userId={userId || ""}
-          productId={product.id}
-          productSlug={product.slug}
-        />
-      </section>
+      <div className="flex flex-col md:flex-row gap-5">
+        <section className="mt-10 flex-1">
+          <h2 className="h2-bold">Customer Reviews</h2>
+          <ReviewList
+            userId={userId || ""}
+            productId={product.id}
+            productSlug={product.slug}
+          />
+        </section>
+        <section className="mt-10 flex-1">
+          <h2 className="h2-bold">Comments ({product.numComments})</h2>
+          <CommentList userId={userId || ""} productId={product.id} />
+        </section>
+      </div>
     </>
   );
 };

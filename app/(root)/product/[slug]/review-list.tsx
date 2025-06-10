@@ -77,9 +77,8 @@ const ReviewList = ({
               <div className="flex space-x-4 text-sm text-muted-foreground">
                 <Rating value={review.rating} />
                 <div className="flex items-center">
-                  <User className="mr-1 h-3 w-3">
-                    {review.user ? review.user.name : "User"}
-                  </User>
+                  <User className="mr-1 h-3 w-3" />
+                  {review.user ? review.user.name : "User"}
                 </div>
                 <div className="flex items-center">
                   <Calendar className="mr-1 h-3 w-3" />
